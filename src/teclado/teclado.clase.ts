@@ -94,5 +94,8 @@ export class TecladoClase {
   async cambiarPosTecla(idArticle, nuevaPos, nombreMenu) {
     return await schTeclas.cambiarPosTecla(idArticle, nuevaPos, nombreMenu);
   }
+  async creartecla(id, nuevaPos, nombreMenu,sumable,nombre) {
+    return await schTeclas.crearTecla(id, nuevaPos, nombreMenu,sumable,nombre);
+  }
 }
 export const tecladoInstance = new TecladoClase();

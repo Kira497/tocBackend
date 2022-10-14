@@ -44,3 +44,10 @@ export async function cambiarPosTecla(idArticle, nuevaPos, nombreMenu) {
 
   return resultado;
 }
+export async function crearTecla(id, nuevaPos, nombreMenu,sumable,nombre) {
+  const database = (await conexion).db('tocgame');
+  const articulos = database.collection('teclas');
+  const resultado = await articulos.insertOne( {Data: new Date(),pos: nuevaPos, nomMenu: nombreMenu, esSumable: sumable,nombreArticulo: nombre,idArticle:id, color:9109472 });
+console.log(resultado)
+  return resultado;
+}

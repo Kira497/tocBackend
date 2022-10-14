@@ -44,4 +44,5 @@ export class ArticulosController {
         return {error: true, mensaje: 'Backend: Faltan datos en articulos/editarArticulo'};
       }
     }
+
 }
