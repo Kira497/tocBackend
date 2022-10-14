@@ -38,6 +38,14 @@ export class Articulos {
       return false;
     });
   }
+  insertarArticulo(articulo, esTarifaEspecial = false) {
+    return schArticulos.insertarArticulo(articulo, esTarifaEspecial).then((res) => {
+      return res;
+    }).catch((err) => {
+      console.log(err);
+      return false;
+    });
+  }
 
   async getSuplementos(suplementos) {
     return await schArticulos.getSuplementos(suplementos);

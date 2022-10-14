@@ -42,4 +42,28 @@ export class TecladoController {
         return {error: true, mensaje: 'Faltan datos en teclado/cambiarPosTecla'};
       }
     }
+
+    @Post('anadirProducto')
+    anadirProducto(@Body() params) {
+   console.log(params)
+      if (params.nombreArticulo && params.precioConIva && params.esSumable && params.precioBase && params.tipoIva && params.menus && params.posicion) {
+        return articulosInstance.insertarArticulo({nombre:params.nombreArticulo,precioConIva:params.precioConIva,tipoIva: params.tipoIva,esSumable:params.esSumable,familia:params.menus,precioBase:params.precioBase}).then((res) => {
+          if (res) {
+            console.log(res)
+            return tecladoInstance.creartecla(`ObjectId('${res['insertedId']}')`, params.posicion, params.menus,params.esSumable,params.nombreArticulo).then((res) => {
+              if (res) {
+                return {error: false, info: res};
+              }
+              return {error: true, mensaje: 'Error en teclado/anadirProducto'};
+            });
+
+           
+          }
+          return {error: true, mensaje: 'Backend: Error, faltan datos'};
+        });
+      } else {
+        return {error: true, mensaje: 'Backend: Faltan datos en articulos/editarArticulo'};
+      }
+    }
+
 }
