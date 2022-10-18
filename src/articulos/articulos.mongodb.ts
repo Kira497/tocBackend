@@ -27,7 +27,6 @@ export async function insertarArticulos(arrayArticulos, esTarifaEspecial = false
   }
 }
 export async function insertarArticulo(articulo, esTarifaEspecial = false) {
-
   const apuntoColeccion = (esTarifaEspecial == true) ? ('articulosTarifaEspecial') : ('articulos');
     const database = (await conexion).db('tocgame');
     const articulos = database.collection(apuntoColeccion);

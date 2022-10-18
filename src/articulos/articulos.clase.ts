@@ -39,6 +39,8 @@ export class Articulos {
     });
   }
   insertarArticulo(articulo, esTarifaEspecial = false) {
+    
+
     return schArticulos.insertarArticulo(articulo, esTarifaEspecial).then((res) => {
       return res;
     }).catch((err) => {
