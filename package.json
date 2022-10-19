@@ -27,7 +27,7 @@
     "@nestjs/common": "^9.0.5",
     "@nestjs/core": "^9.0.5",
     "@nestjs/platform-express": "^9.0.5",
-    "@nestjs/platform-fastify": "^8.4.7",
+    "@nestjs/platform-fastify": "^9.0.5",
     "@nestjs/platform-socket.io": "^9.0.5",
     "@nestjs/platform-ws": "^9.0.5",
     "@nestjs/serve-static": "^3.0.0",
