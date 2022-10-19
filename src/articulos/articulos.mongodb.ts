@@ -26,6 +26,16 @@ export async function insertarArticulos(arrayArticulos, esTarifaEspecial = false
     return res;
   }
 }
+export async function insertarArticulo(articulo, esTarifaEspecial = false) {
+  const apuntoColeccion = (esTarifaEspecial == true) ? ('articulosTarifaEspecial') : ('articulos');
+    const database = (await conexion).db('tocgame');
+    const articulos = database.collection(apuntoColeccion);
+    const id = await articulos.findOne({}, {sort: {_id: -1}})
+    articulo['_id'] =id['_id'] +1
+    const resultado = await articulos.insertOne(articulo);
+    return resultado;
+}
+
 
 export async function borrarArticulos(esTarifaEspecial: boolean) {
   try {
