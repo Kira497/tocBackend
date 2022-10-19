@@ -156,14 +156,6 @@ export class MovimientosClase {
       return false;
     });
   }
-
-  /* Eze v.recortada */
-  async getMovimientosTarjeta() {
-    const fecha = new Date();
-    fecha.setHours(0, 0, 0, 0);
-    const inicioTime = fecha.valueOf();
-    return await schMovimientos.getMovimientosTarjeta(inicioTime, Date.now());
-  }
 }
 
 export const movimientosInstance = new MovimientosClase();
