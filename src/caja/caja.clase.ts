@@ -337,7 +337,6 @@ export class CajaClase {
     currentCaja.infoExtra['totalDeuda'] = totalDeuda;
     descuadre = Math.round((cambioFinal-cambioInicial+totalSalidas-totalEntradas-totalTickets+unaCaja.totalDatafono3G)*100)/100;
     recaudado = totalTickets + descuadre - totalTarjeta - totalDeuda;
-console.log(unaCaja)
     const objImpresion = {
       calaixFet: totalTickets,
       nombreTrabajador: nombreTrabajador,
