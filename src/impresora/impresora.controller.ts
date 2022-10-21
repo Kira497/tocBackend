@@ -23,7 +23,10 @@ export class ImpresoraController {
     @Post('imprimirCaja')
     imprimircaja(@Body() params) {
       const parametros = parametrosInstance.getParametros();
-      return impresoraInstance.imprimirCaja(params.caja.calaixFetZ,params.caja.idDependienta, params.caja.descuadre, params.caja.nClientes,  params.caja.recaudado, params.caja.movimientos, parametros.nombreTienda, params.caja.inicioTime, params.caja.finalTime, params.caja.infoExtra.cambioInicial, params.caja.infoExtra.cambioFinal, null)
+      params.caja.detalleApertura.forEach(element => {
+        console.log(element)
+      });
+      return impresoraInstance.imprimirCaja(params.caja.calaixFetZ,params.caja.idDependienta, params.caja.descuadre, params.caja.nClientes,  params.caja.recaudado, params.caja.movimientos, parametros.nombreTienda, params.caja.inicioTime, params.caja.finalTime, params.caja.infoExtra.cambioInicial, params.caja.infoExtra.cambioFinal,params.totalDatafono3G,params.caja.detalleApertura, params.caja.detalleCierre, null)
 
     }
     
