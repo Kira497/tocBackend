@@ -337,7 +337,6 @@ export class CajaClase {
     currentCaja.infoExtra['totalDeuda'] = totalDeuda;
     descuadre = Math.round((cambioFinal-cambioInicial+totalSalidas-totalEntradas-totalTickets+unaCaja.totalDatafono3G)*100)/100;
     recaudado = totalTickets + descuadre - totalTarjeta - totalDeuda;
-
     const objImpresion = {
       calaixFet: totalTickets,
       nombreTrabajador: nombreTrabajador,
@@ -354,6 +353,10 @@ export class CajaClase {
       cFinalCaja: cambioFinal,
       impresora: params.tipoImpresora,
       totalTarjeta: totalTarjeta,
+      totalDatafono3G:unaCaja.totalDatafono3G,
+      detalleApertura:unaCaja.detalleApertura,
+      detalleCierre: unaCaja.detalleCierre,
+
     };
 
     // vuePantallaCierre.setVariables(objImpresion); ESTO ENVÍA EL DETALLE DEL CIERRE AL FRONTEND
@@ -371,7 +374,11 @@ export class CajaClase {
           objImpresion.fechaFinal,
           objImpresion.cInicioCaja,
           objImpresion.cFinalCaja,
+          objImpresion.totalDatafono3G,
+          objImpresion.detalleApertura,
+          objImpresion.detalleCierre,
           objImpresion.impresora,
+   
       );
     } catch (err) {
       // vueToast.abrir('error', 'Impresora no detectada');
