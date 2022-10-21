@@ -634,7 +634,7 @@ export class Impresora {
             .text('Descuadre        :      ' + descuadre.toFixed(2))
             .text('Clients atesos   :      ' + nClientes)
             .text('Recaudat         :      ' + recaudado.toFixed(2))
-            .text('Datafon 3g         :      ' + totalDatafono3G.toFixed(2))
+            .text('Datafon 3g         :      ' + totalDatafono3G)
             .text('Canvi inicial    :      ' + cInicioCaja.toFixed(2))
             .text('Canvi final      :      ' + cFinalCaja.toFixed(2))
             .text('')
