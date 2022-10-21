@@ -20,7 +20,8 @@ escpos.Serial = require('escpos-serialport');
 escpos.Screen = require('escpos-screen');
 const TIPO_ENTRADA_DINERO = 'ENTRADA';
 const TIPO_SALIDA_DINERO = 'SALIDA';
-
+const mqtt = require('mqtt')
+const client  = mqtt.connect('mqtt://localhost')
 function permisosImpresora() {
   try {
     exec(`  echo sa | sudo -S chmod 777 -R /dev/bus/usb/
@@ -77,6 +78,10 @@ export class Impresora {
       //   var device = new escpos.USB('0x67b','0x2303');
       const device = await dispositivos.getDeviceVisor();
       if (device != null) {
+        if(device === 'MQTT'){
+          client.publish('hit.hardware/visor','Bon Dia!!')
+          return
+        }
         const options = {encoding: 'iso88591'};
         const printer = new escpos.Screen(device, options);
 
@@ -110,6 +115,11 @@ export class Impresora {
       //   var device = new escpos.USB('0x67b','0x2303');
       const device = await dispositivos.getDeviceVisor();
       if (device != null) {
+
+        if(device === 'MQTT'){
+          client.publish('hit.hardware/visor','Moltes Gracies !!')
+          return
+        }
         const options = {encoding: 'iso88591'};
         const printer = new escpos.Screen(device, options);
         try {
@@ -778,6 +788,11 @@ export class Impresora {
       //   var device = new escpos.USB('0x67b','0x2303');
       const device = await dispositivos.getDeviceVisor();
       if (device != null) {
+
+        if(device === 'MQTT'){
+          client.publish('hit.hardware/visor',`${datosExtra} \n ${data.texto}`)
+          return
+        }
         const options = {encoding: 'iso88591'};
         const printer = new escpos.Screen(device, options);
 
