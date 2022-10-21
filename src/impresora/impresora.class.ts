@@ -562,6 +562,7 @@ export class Impresora {
   }
 
   async imprimirCaja(calaixFet, nombreTrabajador, descuadre, nClientes, recaudado, arrayMovimientos: any[], nombreTienda, fI, fF, cInicioCaja, cFinalCaja,totalDatafono3G,detalleApertura,detalleCierre, tipoImpresora) {
+  
     try {
       const fechaInicio = new Date(fI);
       const fechaFinal = new Date(fF);

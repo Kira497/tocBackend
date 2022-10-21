@@ -374,10 +374,11 @@ export class CajaClase {
           objImpresion.fechaFinal,
           objImpresion.cInicioCaja,
           objImpresion.cFinalCaja,
-          objImpresion.impresora,
           objImpresion.totalDatafono3G,
           objImpresion.detalleApertura,
           objImpresion.detalleCierre,
+          objImpresion.impresora,
+   
       );
     } catch (err) {
       // vueToast.abrir('error', 'Impresora no detectada');
