@@ -1,3 +1,4 @@
+import { articulosInstance } from 'src/articulos/articulos.clase';
 import {impresoraInstance} from 'src/impresora/impresora.class';
 import {cestas} from '../cestas/cestas.clase';
 import {trabajadoresInstance} from '../trabajadores/trabajadores.clase';
@@ -17,6 +18,19 @@ export class Devoluciones {
       if (cesta == null || cesta.lista.length == 0) {
         this.bloqueado = false;
         return false;
+      }
+      for (const key in cesta.lista) {
+        const infoArticulo = await articulosInstance.getInfoArticulo(
+          cesta.lista[key]._id
+        );
+        const gramos = cesta.lista[key].subtotal / infoArticulo.precioConIva;
+        if (
+          infoArticulo.esSumable == false &&
+          !cesta.lista[key].suplementosId &&
+          cesta.lista[key].unidades == 1
+        ) {
+          cesta.lista[key].unidades = gramos;
+        }
       }
       const objDevolucion: DevolucionesInterface = {
         _id: nuevoIdTicket,
