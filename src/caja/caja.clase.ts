@@ -127,7 +127,7 @@ export class CajaClase {
   getDatosUltimoCierre() {
     return schCajas.getDatosUltimoCierre().then((res) => {
       if (res != null) {
-        return res;
+           return res;      
       } else {
         return null;
       }
