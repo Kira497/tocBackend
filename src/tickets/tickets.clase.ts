@@ -8,7 +8,8 @@ import { articulosInstance } from "../articulos/articulos.clase";
 import axios from "axios";
 import { clienteInstance } from "../clientes/clientes.clase";
 import { CestasInterface } from "src/cestas/cestas.interface";
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export class TicketsClase {
   /* No válido para clientes especiales que pagan en tienda (infoClienteVip) */
   generarObjetoTicket(
@@ -54,14 +55,14 @@ export class TicketsClase {
         return res;
       })
       .catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return null;
       });
   }
 
   anularTicket(idTicket, forzar = false) {
     return schTickets.anularTicket(idTicket, forzar).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -80,7 +81,7 @@ export class TicketsClase {
         return resultado;
       })
       .catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return null;
       });
   }
@@ -98,7 +99,7 @@ export class TicketsClase {
         }
       })
       .catch((err) => {
-        console.log(err.message);
+        mqtt.loggerMQTT(err.message);
         return 0;
       });
   }
@@ -116,7 +117,7 @@ export class TicketsClase {
               idClienteFinal: ticket.cliente,
             })
             .catch((err) => {
-              console.log(err);
+              mqtt.loggerMQTT(err);
             });
           articulosInstance.setEstadoTarifaEspecial(false);
           clienteInstance.setEstadoClienteVIP(false);
@@ -125,7 +126,7 @@ export class TicketsClase {
       }
       return false;
     } catch (err) {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     }
   }
@@ -136,7 +137,7 @@ export class TicketsClase {
     const cesta = await cestas.getCesta(idCesta);
 
     if (cesta == null || cesta.lista.length == 0) {
-      console.log("Error, la cesta es null o está vacía");
+      mqtt.loggerMQTT("Error, la cesta es null o está vacía");
       return false;
     }
     for (const key in cesta.lista) {
@@ -187,13 +188,13 @@ export class TicketsClase {
         if (await parametrosInstance.setUltimoTicket(objTicket._id)) {
           return true;
         } else {
-          console.log("Error no se ha podido cambiar el último id ticket");
+          mqtt.loggerMQTT("Error no se ha podido cambiar el último id ticket");
         }
       } else {
-        console.log("Error, no se ha podido borrar la cesta");
+        mqtt.loggerMQTT("Error, no se ha podido borrar la cesta");
       }
     } else {
-      console.log("Error, no se ha podido insertar el ticket");
+      mqtt.loggerMQTT("Error, no se ha podido insertar el ticket");
     }
     return false;
   }
@@ -207,7 +208,7 @@ export class TicketsClase {
     const nuevoIdTicket = (await this.getUltimoTicket()) + 1;
     const cesta = await cestas.getCesta(idCesta);
     if (cesta == null || cesta.lista.length == 0) {
-      console.log("Error, la cesta es null o está vacía");
+      mqtt.loggerMQTT("Error, la cesta es null o está vacía");
       return false;
     }
     for (const key in cesta.lista) {
@@ -264,13 +265,13 @@ export class TicketsClase {
           );
           return true;
         } else {
-          console.log("Error no se ha podido cambiar el último id ticket");
+          mqtt.loggerMQTT("Error no se ha podido cambiar el último id ticket");
         }
       } else {
-        console.log("Error, no se ha podido borrar la cesta");
+        mqtt.loggerMQTT("Error, no se ha podido borrar la cesta");
       }
     } else {
-      console.log("Error, no se ha podido insertar el ticket");
+      mqtt.loggerMQTT("Error, no se ha podido insertar el ticket");
     }
     return false;
   }
@@ -286,7 +287,7 @@ export class TicketsClase {
     const cesta = await cestas.getCesta(idCesta);
 
     if (cesta == null || cesta.lista.length == 0) {
-      console.log("Error, la cesta es null o está vacía");
+      mqtt.loggerMQTT("Error, la cesta es null o está vacía");
       return false;
     }
     for (const key in cesta.lista) {
@@ -349,7 +350,7 @@ export class TicketsClase {
                 return salida0;
               })
               .catch((err) => {
-                console.log(err);
+                mqtt.loggerMQTT(err);
                 return false;
               });
           } else {
@@ -375,7 +376,7 @@ export class TicketsClase {
                       return salida2;
                     })
                     .catch((err) => {
-                      console.log(err);
+                      mqtt.loggerMQTT(err);
                       return false;
                     });
                 } else {
@@ -383,18 +384,18 @@ export class TicketsClase {
                 }
               })
               .catch((err) => {
-                console.log(err);
+                mqtt.loggerMQTT(err);
                 return false;
               });
           }
         } else {
-          console.log("Error no se ha podido cambiar el último id ticket");
+          mqtt.loggerMQTT("Error no se ha podido cambiar el último id ticket");
         }
       } else {
-        console.log("Error, no se ha podido borrar la cesta");
+        mqtt.loggerMQTT("Error, no se ha podido borrar la cesta");
       }
     } else {
-      console.log("Error, no se ha podido insertar el ticket");
+      mqtt.loggerMQTT("Error, no se ha podido insertar el ticket");
     }
     return false;
   }
@@ -410,7 +411,7 @@ export class TicketsClase {
     const cesta = await cestas.getCesta(idCesta);
 
     if (cesta == null || cesta.lista.length == 0) {
-      console.log("Error, la cesta es null o está vacía");
+      mqtt.loggerMQTT("Error, la cesta es null o está vacía");
       return false;
     }
     for (const key in cesta.lista) {
@@ -463,13 +464,13 @@ export class TicketsClase {
           );
           return true;
         } else {
-          console.log("Error no se ha podido cambiar el último id ticket");
+          mqtt.loggerMQTT("Error no se ha podido cambiar el último id ticket");
         }
       } else {
-        console.log("Error, no se ha podido borrar la cesta");
+        mqtt.loggerMQTT("Error, no se ha podido borrar la cesta");
       }
     } else {
-      console.log("Error, no se ha podido insertar el ticket");
+      mqtt.loggerMQTT("Error, no se ha podido insertar el ticket");
     }
     return false;
   }
@@ -480,7 +481,7 @@ export class TicketsClase {
     const cesta = await cestas.getCesta(idCesta);
 
     if (cesta == null || cesta.lista.length == 0) {
-      console.log("Error, la cesta es null o está vacía");
+      mqtt.loggerMQTT("Error, la cesta es null o está vacía");
       return false;
     }
     for (const key in cesta.lista) {
@@ -526,20 +527,20 @@ export class TicketsClase {
         if (await parametrosInstance.setUltimoTicket(objTicket._id)) {
           return true;
         } else {
-          console.log("Error no se ha podido cambiar el último id ticket");
+          mqtt.loggerMQTT("Error no se ha podido cambiar el último id ticket");
         }
       } else {
-        console.log("Error, no se ha podido borrar la cesta");
+        mqtt.loggerMQTT("Error, no se ha podido borrar la cesta");
       }
     } else {
-      console.log("Error, no se ha podido insertar el ticket");
+      mqtt.loggerMQTT("Error, no se ha podido insertar el ticket");
     }
     return false;
   }
 
   getTicketMasAntiguo(): Promise<TicketsInterface> {
     return schTickets.getTicketMasAntiguo().catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }
@@ -551,7 +552,7 @@ export class TicketsClase {
         return res.acknowledged;
       })
       .catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return false;
       });
   }
@@ -563,7 +564,7 @@ export class TicketsClase {
         return res.acknowledged;
       })
       .catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return false;
       });
   }
@@ -578,7 +579,7 @@ export class TicketsClase {
 
   // desbloquearTicket(idTicket: number) {
   //   return schTickets.desbloquearTicket(idTicket).catch((err) => {
-  //     console.log(err);
+  //     mqtt.loggerMQTT(err);
   //     return false;
   //   });
   // }

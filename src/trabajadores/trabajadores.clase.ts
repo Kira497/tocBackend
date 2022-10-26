@@ -6,7 +6,8 @@ import * as schTrabajadores from './trabajadores.mongodb';
 import {parametrosInstance} from '../parametros/parametros.clase';
 import axios from 'axios';
 import {cestas} from '../cestas/cestas.clase';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export class TrabajadoresClase {
   buscar(busqueda: string) {
     return schTrabajadores.buscar(busqueda).then((res: TrabajadoresInterface[]) => {
@@ -16,7 +17,7 @@ export class TrabajadoresClase {
         return [];
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return [];
     });
   }
@@ -33,7 +34,7 @@ export class TrabajadoresClase {
       }
       return {error: false, info: nuevoArray};
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return {error: true, info: []};
     });
   }
@@ -54,14 +55,14 @@ export class TrabajadoresClase {
                   return {error: true, mensaje: 'Backend: Error actualizarTrabajadores ultimo momento'};
                 }
               }).catch((err) => {
-                console.log(err);
+                mqtt.loggerMQTT(err);
                 return {error: true, mensaje: 'Backend: Error actualizarTrabajadores CATCH'};
               });
             } else {
               return {error: true, mensaje: 'Backend: Error en actualizarTrabajadores/mantenerTrabajadoresFichados normal'};
             }
           }).catch((err) => {
-            console.log(err);
+            mqtt.loggerMQTT(err);
             return {error: true, mensaje: 'Backend: Error en actualizarTrabajadores/mantenerTrabajadoresFichados CATCH'};
           });
         } else {
@@ -81,7 +82,7 @@ export class TrabajadoresClase {
         return null;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     }); ;
   }
@@ -94,7 +95,7 @@ export class TrabajadoresClase {
         return null;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }
@@ -108,7 +109,7 @@ export class TrabajadoresClase {
         return false;
       };
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -123,7 +124,7 @@ export class TrabajadoresClase {
         return false;
       };
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -152,20 +153,20 @@ export class TrabajadoresClase {
                 return false;
               }
             }).catch((err) => {
-              console.log(err);
+              mqtt.loggerMQTT(err);
               return false;
             });
           }
           return false;
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return false;
         });
       } else {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -182,14 +183,14 @@ export class TrabajadoresClase {
             return false;
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return false;
         });
       } else {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -209,20 +210,20 @@ export class TrabajadoresClase {
                 return false;
               }
             }).catch((err) => {
-              console.log(err);
+              mqtt.loggerMQTT(err);
               return false;
             });
           }
           return false;
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return false;
         });
       } else {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -242,20 +243,20 @@ export class TrabajadoresClase {
                 return false;
               }
             }).catch((err) => {
-              console.log(err);
+              mqtt.loggerMQTT(err);
               return false;
             });
           }
           return false;
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return false;
         });
       } else {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -289,7 +290,7 @@ export class TrabajadoresClase {
     return schTrabajadores.buscarTrabajadoresFichados().then((arrayFichados: TrabajadoresInterface[]) => {
       return arrayFichados;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }
@@ -298,7 +299,7 @@ export class TrabajadoresClase {
     return schTrabajadores.insertarTrabajadores(arrayTrabajadores).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -311,7 +312,7 @@ export class TrabajadoresClase {
     return schTrabajadores.actualizarEstadoFichaje(fichaje).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -323,7 +324,7 @@ export class TrabajadoresClase {
       }
       return false;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       /* En caso de error, le devuelvo true para eliminar el plan de la lista, para que no se utilice */
       return true;
     });
@@ -361,11 +362,11 @@ export class TrabajadoresClase {
           throw Error(res.data.mensaje);
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return [];
       });
     } catch (err) {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return [];
     }
   }
@@ -384,7 +385,7 @@ export class TrabajadoresClase {
         return {error: true, mensaje: res.data.mensaje};
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return {error: true, mensaje: 'Error Backend: trabajadores/guardarHorasExtraCoordinacion'};
     });
   }

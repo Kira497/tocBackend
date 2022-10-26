@@ -7,7 +7,8 @@ const moment = require('moment');
 const Ean13Utils = require('ean13-lib').Ean13Utils;
 const TIPO_ENTRADA = 'ENTRADA';
 const TIPO_SALIDA = 'SALIDA';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 function getNumeroTresDigitos(x: number) {
   let devolver = '';
   if (x< 100 && x >=10) {
@@ -41,7 +42,7 @@ export class MovimientosClase {
         codigoBarras = String(Ean13Utils.generate(codigoBarras));
       }
     } catch (err) {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     }
 
     const objSalida: MovimientosInterface = {
@@ -152,7 +153,7 @@ export class MovimientosClase {
     return schMovimientos.actualizarEstadoMovimiento(movimiento).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }

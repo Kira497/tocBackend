@@ -11,7 +11,8 @@ import { limpiezaFichajes } from "./trabajadores/trabajadores.mongodb";
 import { limpiezaCajas } from "./caja/caja.mongodb";
 import { limpiezaMovimientos } from "./movimientos/movimientos.mongodb";
 import axios from "axios";
-
+import {Mqtt} from './mqtt';
+const mqtt = new Mqtt();
 let enProcesoTickets = false;
 let enProcesoMovimientos = false;
 
@@ -28,7 +29,7 @@ async function datafonoLibre(ipPaytef: string): Promise<boolean> {
       }
       return false;
     } catch (err) {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return true;
     }
   }
@@ -52,14 +53,14 @@ async function sincronizarTickets(continuar: boolean = false) {
           }
         }
       } else {
-        console.log("No hay parámetros definidos en la BBDD");
+        mqtt.loggerMQTT("No hay parámetros definidos en la BBDD");
       }
     }
     enProcesoTickets = false;
     return false;
   } catch (err) {
     enProcesoTickets = false;
-    console.log(err);
+    mqtt.loggerMQTT(err);
   }
 }
 
@@ -84,14 +85,14 @@ function sincronizarCajas() {
             }
           })
           .catch((err) => {
-            console.log(err);
+            mqtt.loggerMQTT(err);
           });
       } else {
-        console.log("No hay parámetros definidos en la BBDD");
+        mqtt.loggerMQTT("No hay parámetros definidos en la BBDD");
       }
     })
     .catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     });
 }
 
@@ -110,13 +111,13 @@ async function sincronizarMovimientos(continuar: boolean = false) {
           return true;
         }
       } else {
-        console.log("No hay parámetros definidos en la BBDD");
+        mqtt.loggerMQTT("No hay parámetros definidos en la BBDD");
       }
     }
     enProcesoMovimientos = false;
   } catch (err) {
     enProcesoMovimientos = false;
-    console.log(err);
+    mqtt.loggerMQTT(err);
   }
 }
 
@@ -141,14 +142,14 @@ function sincronizarFichajes() {
             }
           })
           .catch((err) => {
-            console.log(err);
+            mqtt.loggerMQTT(err);
           });
       } else {
-        console.log("No hay parámetros definidos en la BBDD");
+        mqtt.loggerMQTT("No hay parámetros definidos en la BBDD");
       }
     })
     .catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     });
 }
 
@@ -173,21 +174,21 @@ function sincronizarDevoluciones() {
             }
           })
           .catch((err) => {
-            console.log(err);
+            mqtt.loggerMQTT(err);
           });
       } else {
-        console.log("No hay parámetros definidos en la BBDD");
+        mqtt.loggerMQTT("No hay parámetros definidos en la BBDD");
       }
     })
     .catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     });
 }
 
 /* Actualiza precios, teclado y promociones (es decir, todo) */
 function actualizarTeclados() {
   tecladoInstance.actualizarTeclado().catch((err) => {
-    console.log(err);
+    mqtt.loggerMQTT(err);
   });
 }
 

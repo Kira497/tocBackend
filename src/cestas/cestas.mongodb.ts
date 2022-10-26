@@ -33,7 +33,6 @@ export async function borrarCestaTrabajador(idTrabajador: string) {
   const database = (await conexion).db('tocgame');
   const cesta = database.collection('cestas');
   const resultado = await cesta.deleteMany({idTrabajador: idTrabajador});
-  console.log(resultado);
   return resultado;
 }
 

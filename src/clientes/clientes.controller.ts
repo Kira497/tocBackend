@@ -4,7 +4,8 @@ import {UtilesModule} from 'src/utiles/utiles.module';
 import {articulosInstance} from '../articulos/articulos.clase';
 import {parametrosInstance} from '../parametros/parametros.clase';
 import {clienteInstance} from './clientes.clase';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('clientes')
 export class ClientesController {
     @Post('buscar')
@@ -22,7 +23,7 @@ export class ClientesController {
             return {error: true, mensaje: 'Error. Este cliente no existe en la BBDD'};
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true, mensaje: 'Error en getClienteByID'};
         });
       } else {
@@ -46,7 +47,7 @@ export class ClientesController {
               }
               return {error: true, mensaje: 'Backend: Error en clientes/comprobarVIP > InsertarArticulos especiales'};
             }).catch((err) => {
-              console.log(err);
+              mqtt.loggerMQTT(err);
               return {error: true, mensaje: 'Backend: Error en catch clientes/comprobarVIP > InsertarArticulos (especiales)'};
             });
           } else { // No tiene tarifa especial
@@ -56,7 +57,7 @@ export class ClientesController {
           return {error: true, mensaje: res.data.mensaje};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Error en backend comprobarVIP'};
       });
     }
@@ -72,13 +73,13 @@ export class ClientesController {
             }
             return {error: true, mensaje: 'Backend: Error en insertarClientes de clientes/descargarClientesFinales'};
           }).catch((err) => {
-            console.log(err);
+            mqtt.loggerMQTT(err);
             return {error: true, mensaje: 'Backend: Error en insertarClientes de clientes/descargarClientesFinales CATCH'};
           });
         }
         return {error: true, mensaje: res.data.mensaje};
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Backend: Error en clientes/descargarClientesFinales CATCH'};
       });
     }
@@ -100,7 +101,7 @@ export class ClientesController {
               return {error: true, mensaje: res.data.mensaje};
             }
           }).catch((err) => {
-            console.log(err);
+            mqtt.loggerMQTT(err);
             return {error: true, mensaje: 'Error backend: clientes/crearNuevoCliente CATCH'};
           });
         } else {

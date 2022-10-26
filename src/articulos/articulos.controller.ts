@@ -1,8 +1,10 @@
+
 import {Controller, Post, Body} from '@nestjs/common';
 import axios from 'axios';
 import {clienteInstance} from '../clientes/clientes.clase';
 import {articulosInstance} from './articulos.clase';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('articulos')
 export class ArticulosController {
     @Post('getArticulo')
@@ -14,7 +16,7 @@ export class ArticulosController {
         return {error: true, mensaje: 'Backend: Error, el articulo es null'};
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return {error: true, mensaje: 'Backend: Error en articulos/getArticulo catch'};
     });
   }
@@ -33,7 +35,7 @@ export class ArticulosController {
     @Post('editarArticulo')
     editarArticulo(@Body() params) {
       if (params.idArticulo && params.nombre && params.precioBase && params.precioConIva) {
-        // console.log('Hola', params.idArticulo, params.nombre, params.precioBase, params.precioConIva)
+        // mqtt.loggerMQTT('Hola', params.idArticulo, params.nombre, params.precioBase, params.precioConIva)
         return articulosInstance.editarArticulo(params.idArticulo, params.nombre, params.precioBase, params.precioConIva).then((res) => {
           if (res) {
             return {error: false, info: res};

@@ -1,5 +1,6 @@
 import {parametrosInstance} from './parametros/parametros.clase';
-
+import {Mqtt} from './mqtt';
+const mqtt = new Mqtt();
 const escpos = require('escpos');
 const exec = require('child_process').exec;
 const os = require('os');
@@ -22,11 +23,11 @@ export class Dispositivos {
           });
           return device;
         } else {
-          console.log('Parametros de impresora no configurados');
+          mqtt.loggerMQTT('Parametros de impresora no configurados')
           return null;
         }
       } catch (err) {
-        console.log(err);
+        mqtt.loggerMQTT(err)
         return null;
       }
     } else if (os.platform() === 'win32') {
@@ -35,9 +36,9 @@ export class Dispositivos {
         if (parametros.tipoImpresora == 'USB') {
         
           // const device: number = new escpos.USB();
-          console.log('OBSERVÁ: ', parametros.impresoraUsbInfo.vid.toUpperCase(), parametros.impresoraUsbInfo.pid.toUpperCase());
+          mqtt.loggerMQTT(`OBSERVÁ:  ${parametros.impresoraUsbInfo.vid.toUpperCase()}, ${parametros.impresoraUsbInfo.pid.toUpperCase()}`)
           const device: number = new escpos.USB(parametros.impresoraUsbInfo.vid.toUpperCase(), parametros.impresoraUsbInfo.pid.toUpperCase());
-          console.log(device);
+          mqtt.loggerMQTT(device)
           return device;
         } else if (parametros.tipoImpresora == 'SERIE') {
           const device = new escpos.Serial('COM1', {
@@ -46,11 +47,12 @@ export class Dispositivos {
           });
           return device;
         } else {
-          console.log('Parametros de impresora no configurados');
+          
+          mqtt.loggerMQTT('Parametros de impresora no configurados');
           return null;
         }
       } catch (err) {
-        console.log(err.message);
+        mqtt.loggerMQTT(err.message);
         return null;
       }
     }
@@ -59,8 +61,8 @@ export class Dispositivos {
   async getDeviceVisor() {
     const parametros = await parametrosInstance.getEspecialParametros();
     if (parametros.visor != undefined) {
-      if(parametros.visor == 'MQTT'){
-        return 'MQTT'
+      if(parametros.visor == 'mqtt'){
+        return 'mqtt'
       }
       if (parametros.visor.includes('COM') || parametros.visor == 'SI') {
         if (os.platform() === 'win32') {

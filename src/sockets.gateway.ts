@@ -15,7 +15,8 @@ import {LogsClass} from './logs/logs.class';
 import {Socket} from 'dgram';
 const net = require('net');
 const fs = require('fs');
-
+import {Mqtt} from './mqtt';
+const mqtt = new Mqtt();
 @WebSocketGateway(5051, {
   cors: {
     origin: true,
@@ -34,10 +35,10 @@ export class SocketGateway {
   }
 
   handleConnection(client: any, ...args: any[]) {
-    console.log('Nuevo cliente conectado por socket');
+    mqtt.loggerMQTT('Nuevo cliente conectado por socket');
   }
   handleDisconnect() {
-    console.log('Se ha desconectado un cliente del socket');
+    mqtt.loggerMQTT('Se ha desconectado un cliente del socket');
   }
 
   @SubscribeMessage('test')

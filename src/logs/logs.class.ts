@@ -1,5 +1,6 @@
 import {conexion} from '../conexion/mongodb';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export class LogsClass {
   static newLog(dato1: any, dato2: any) {
     conexion.then((conexionInstance) => {
@@ -7,7 +8,7 @@ export class LogsClass {
       const logs = database.collection('logs');
       logs.insertOne({dato1, dato2});
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     });
   }
 }

@@ -2,20 +2,21 @@ import * as schClientes from './clientes.mongodb';
 import {ClientesInterface} from './clientes.interface';
 import axios from 'axios';
 import {parametrosInstance} from 'src/parametros/parametros.clase';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export class Clientes {
   private clienteVip: boolean = false;
   /* Busca tanto nombres como tarjeta cliente */
   buscar(cadena: string) {
     return schClientes.buscar(cadena).then((res: ClientesInterface[]) => {
       if (res.length > 0) {
-        console.log(res);
+        mqtt.loggerMQTT(res);
         return res;
       } else {
         return [];
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return [];
     });
   }
@@ -24,7 +25,7 @@ export class Clientes {
     return schClientes.getClieneteByID(idCliente).then((res: ClientesInterface) => {
       return res;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }
@@ -33,7 +34,7 @@ export class Clientes {
     return schClientes.insertarClientes(arrayClientes).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -43,11 +44,11 @@ export class Clientes {
       if (res.data.error == false) {
         return res.data.info;
       } else {
-        console.log(res.data.error);
+        mqtt.loggerMQTT(res.data.error);
         return 0;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return 0;
     });
   }
@@ -56,7 +57,7 @@ export class Clientes {
     try {
       this.clienteVip = nuevoEstado;
     } catch (err) {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     }
   }
 

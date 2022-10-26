@@ -1,5 +1,6 @@
 import * as schDobleMenus from './doble-menus.mongodb';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export class DobleMenusClase {
   private bloqueado: boolean;
 
@@ -27,7 +28,7 @@ export class DobleMenusClase {
     return schDobleMenus.insertarMenus(arrayMenus).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }

@@ -3,7 +3,8 @@ import {Console} from 'console';
 import {UtilesModule} from 'src/utiles/utiles.module';
 import {trabajadoresInstance} from '../trabajadores/trabajadores.clase';
 import {cestas} from './cestas.clase';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('cestas')
 export class CestasController {
     @Post('borrarCesta')
@@ -119,7 +120,7 @@ export class CestasController {
         }
         return {error: true, mensaje: 'Backend: Error en cestas/getCestaByID'};
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Backend: Error en cestas/getCestaByID CATCH'};
       });
     }
@@ -136,14 +137,14 @@ export class CestasController {
 
               return {error: true, mensaje: 'Backend: Error en cestas/getCestaByID'};
             }).catch((err) => {
-              console.log(err);
+              mqtt.loggerMQTT(err);
               return {error: true, mensaje: 'Backend: Error en cestas/getCestaByID CATCH'};
             });
           });
           // return cestas.getCestaRandom().then((res) => {
           //     return { error: false, info: res };
           // }).catch((err) => {
-          //     console.log(err);
+          //     mqtt.loggerMQTT(err);
           //     return { error: true, mensaje: 'Backend: Error en cestas/getCestaByID > getCestaRandom CATCH' };
           // });
         } else {
@@ -155,7 +156,7 @@ export class CestasController {
 
             return {error: true, mensaje: 'Backend: Error en cestas/getCestaByID'};
           }).catch((err) => {
-            console.log(err);
+            mqtt.loggerMQTT(err);
             return {error: true, mensaje: 'Backend: Error en cestas/getCestaByID CATCH'};
           });
         }
@@ -174,7 +175,7 @@ export class CestasController {
             }
             return {error: true, mensaje: 'Backend: Error en cestas/getCestaByID'};
           }).catch((err) => {
-            console.log(err);
+            mqtt.loggerMQTT(err);
             return {error: true, mensaje: 'Backend: Error en cestas/getCestaByID CATCH'};
           });
         } else {
@@ -227,7 +228,7 @@ export class CestasController {
       return cestas.getTodasCestas().then((res) => {
         return {error: false, info: res};
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Backend: Error en cestas/getCestas CATCH'};
       });
     }
@@ -270,7 +271,7 @@ export class CestasController {
                 }
                 return {error: true, mensaje: 'Backend: Error en cestas/regalarProductos > setCesta'};
               }).catch((err) => {
-                console.log(err);
+                mqtt.loggerMQTT(err);
                 return {error: true, mensaje: 'Backend: Error en cestas/regalarProductos > setCesta CATCH'};
               });
             });
@@ -279,7 +280,7 @@ export class CestasController {
             return {error: true, mensaje: 'Backend: Error, cesta vacía'};
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true, mensaje: 'Backend: Error en cestas/regalarProducto > getCesta CATCH'};
         });
       } else {
@@ -297,7 +298,7 @@ export class CestasController {
             cesta: res,
           };
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {
             error: true,
             bloqueado: false,
@@ -332,7 +333,7 @@ export class CestasController {
             cesta: res,
           };
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {
             error: true,
             bloqueado: false,

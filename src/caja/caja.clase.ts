@@ -10,7 +10,8 @@ import {parametrosInstance} from '../parametros/parametros.clase';
 import {movimientosInstance} from '../movimientos/movimientos.clase';
 import {impresoraInstance} from '../impresora/impresora.class';
 import { ticketsInstance } from '../tickets/tickets.clase';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 const TIPO_ENTRADA = 'ENTRADA';
 const TIPO_SALIDA = 'SALIDA';
 const cajaVacia: CajaInterface = {
@@ -56,7 +57,7 @@ export class CajaClase {
         return true;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -65,7 +66,7 @@ export class CajaClase {
     return schCajas.confirmarCajaEnviada(caja).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -78,7 +79,7 @@ export class CajaClase {
     return schCajas.confirmarCajaHabiaLlegado(caja).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -96,7 +97,7 @@ export class CajaClase {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -105,7 +106,7 @@ export class CajaClase {
     return schCajas.guardarMonedas(arrayMonedas, tipo).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -118,7 +119,7 @@ export class CajaClase {
         return null;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }
@@ -131,7 +132,7 @@ export class CajaClase {
         return null;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }
@@ -145,7 +146,7 @@ export class CajaClase {
         return null;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }
@@ -195,7 +196,7 @@ export class CajaClase {
         }
       }
     } catch (err) {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     }
   }
 
@@ -258,7 +259,7 @@ export class CajaClase {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -382,7 +383,7 @@ export class CajaClase {
       );
     } catch (err) {
       // vueToast.abrir('error', 'Impresora no detectada');
-      console.log(err);
+      mqtt.loggerMQTT(err);
     }
 
     unaCaja.descuadre = descuadre;

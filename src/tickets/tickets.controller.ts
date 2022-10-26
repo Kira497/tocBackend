@@ -1,7 +1,8 @@
 import {Controller, Post, Get, Body, Query} from '@nestjs/common';
 import {ticketsInstance} from './tickets.clase';
 import {cajaInstance} from '../caja/caja.clase';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('tickets')
 export class TicketsController {
     @Post('getTicketsIntervalo')
@@ -13,7 +14,7 @@ export class TicketsController {
         return [];
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return [];
     });
   }
@@ -51,7 +52,7 @@ export class TicketsController {
             };
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {
             error: true,
             mensaje: 'Error. Comprobar log nest',
@@ -77,7 +78,7 @@ export class TicketsController {
             };
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {
             error: true,
             mensaje: 'Error. Comprobar log nest',
@@ -97,7 +98,7 @@ export class TicketsController {
           }
           return {error: true, mensaje: 'Backend: Error en tickets/crearTicketDeuda'};
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true, mensaje: 'Backend: Error en tickets/crearTicketDeuda CATCH'};
         });
       } else {
@@ -114,7 +115,7 @@ export class TicketsController {
           }
           return {error: true, mensaje: 'Backend: Error en tickets/crearTicketConsumoPersonal'};
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true, mensaje: 'Backend: Error en tickets/crearTicketConsumoPersonal CATCH'};
         });
       } else {
@@ -131,7 +132,7 @@ export class TicketsController {
           }
           return {error: true, mensaje: 'Backend: Error en tickets/crearTicketTKRS'};
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true, mensaje: 'Backend: Error en tickets/crearTicketTKRS CATCH'};
         });
       } else {

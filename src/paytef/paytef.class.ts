@@ -14,7 +14,8 @@ import { LogsClass } from "src/logs/logs.class";
 import { TransaccionesInterface } from "src/transacciones/transacciones.interface";
 import { Socket } from "dgram";
 import { Respuesta } from "./paytef.interface";
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 function limpiarNombreTienda(cadena: string) {
   const devolver = Number(cadena.replace(/\D/g, ""));
   if (isNaN(devolver) == false) {
@@ -88,7 +89,7 @@ class PaytefClass {
       }
       return false;
     } catch (err) {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     }
   }
@@ -107,7 +108,7 @@ class PaytefClass {
         );
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     });
   }
 
@@ -156,7 +157,7 @@ class PaytefClass {
         throw Error("IP TefPay no definida, contacta con informática");
       }
     } catch (err) {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       this.cancelarOperacion(idTicket);
       this.anularOperacion(idTicket, "Backend: " + err.message);
       client.emit("consultaPaytef", {

@@ -2,7 +2,8 @@ import {Controller, Post} from '@nestjs/common';
 import axios from 'axios';
 import {parametrosInstance} from 'src/parametros/parametros.clase';
 import {paramsTicketInstance} from './params-ticket.class';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('params-ticket')
 export class ParamsTicketController {
     @Post('descargarInfoTicket')
@@ -16,7 +17,7 @@ export class ParamsTicketController {
         return {error: true, mensaje: 'Backend: Error en params-ticket/descargarInfoTicket > insertarParametrosTicket'};
       } );
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return {error: true, mensaje: 'Backend: Error en params-ticket/descargarInfoTicket CATCH'};
     });
   }

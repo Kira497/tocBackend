@@ -4,7 +4,8 @@ import {cestas} from '../cestas/cestas.clase';
 import {trabajadoresInstance} from '../trabajadores/trabajadores.clase';
 import {DevolucionesInterface} from './devoluciones.interface';
 import * as schDevoluciones from './devoluciones.mongodb';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export class Devoluciones {
   private bloqueado = false;
 
@@ -66,7 +67,7 @@ export class Devoluciones {
     return schDevoluciones.actualizarEstadoDevolucion(devolucion).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -75,7 +76,7 @@ export class Devoluciones {
     return schDevoluciones.insertarDevolucion(data).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
