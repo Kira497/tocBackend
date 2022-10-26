@@ -6,7 +6,8 @@ import {cestas} from '../cestas/cestas.clase';
 import {CestasInterface} from '../cestas/cestas.interface';
 import {PromocionesInterface} from './promociones.interface';
 import * as schPromociones from './promociones.mongodb';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export class OfertasClase {
   private promociones: PromocionesInterface[];
   private promocionesActivas = true;
@@ -282,7 +283,7 @@ export class OfertasClase {
         }
         return res.acknowledged;
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return false;
       });
     } else {
@@ -302,7 +303,7 @@ export class OfertasClase {
         return this.insertarPromociones(arrayPromos).then((res) => {
           return res;
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return false;
         });
       } else {
@@ -310,7 +311,7 @@ export class OfertasClase {
         return true;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }

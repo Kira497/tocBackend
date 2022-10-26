@@ -10,7 +10,8 @@ import {impresoraInstance} from '../impresora/impresora.class';
 import {trabajadoresInstance} from '../trabajadores/trabajadores.clase';
 import axios from 'axios';
 import {parametrosInstance} from '../parametros/parametros.clase';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 /* Siempre cargar la cesta desde MongoDB */
 export class CestaClase {
   private cesta: CestasInterface;
@@ -34,7 +35,7 @@ export class CestaClase {
     return schCestas.updateIdCestaTrabajador(id).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -61,7 +62,7 @@ export class CestaClase {
         });
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }
@@ -90,7 +91,7 @@ export class CestaClase {
       return schCestas.eliminarCestaByIdTrabajador(parametros.idCurrentTrabajador).then((res) => {
         return res.acknowledged;
       }).catch((err) => {
-        console.log(err.message);
+        mqtt.loggerMQTT(err.message);
         return false;
       });
     });
@@ -137,7 +138,7 @@ export class CestaClase {
     return schCestas.borrarCesta(idCestaBorrar).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -145,7 +146,7 @@ export class CestaClase {
     return schCestas.borrarCestaTrabajador(idTrabajador).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -155,7 +156,7 @@ export class CestaClase {
     return schCestas.eliminarCesta(nombreCesta).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -172,7 +173,7 @@ export class CestaClase {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -188,7 +189,7 @@ export class CestaClase {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -198,7 +199,7 @@ export class CestaClase {
     if (typeof idTrabajador == 'number') {
       const nuevaCesta = this.nuevaCestaVacia();
       nuevaCesta.idTrabajador = idTrabajador;
-      console.log(idTrabajador);
+      mqtt.loggerMQTT(idTrabajador);
       return this.setCesta(nuevaCesta).then((res) => {
         if (res) {
           return nuevaCesta;
@@ -206,7 +207,7 @@ export class CestaClase {
           return false;
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return false;
       });
     } else {
@@ -231,15 +232,15 @@ export class CestaClase {
             return false;
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return false;
         });
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return false;
       });
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -364,18 +365,18 @@ export class CestaClase {
                   texto: infoArticulo.nombre,
                 });
               } catch (err) {
-                console.log(err);
+                mqtt.loggerMQTT(err);
               }
             });
           }
         }
       } catch (err) {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         // vueToast.abrir('error', 'Error al añadir el articulo');
         this.udsAplicar = 1;
       }
     } else {
-      console.log('Error: La caja está cerrada, no se puede insertar un articulo en la cesta');
+      mqtt.loggerMQTT('Error: La caja está cerrada, no se puede insertar un articulo en la cesta');
       // vueToast.abrir('danger', 'Se requiere una caja abierta para cobrar');
     }
     this.udsAplicar = 1;
@@ -426,7 +427,7 @@ export class CestaClase {
               texto: infoArticulo.nombre,
             });
           } catch (err) {
-            console.log(err);
+            mqtt.loggerMQTT(err);
           }
         });
       } else if (cesta.lista[i].promocion.esPromo === true) {
@@ -462,7 +463,7 @@ export class CestaClase {
       }
       return false;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -488,7 +489,7 @@ export class CestaClase {
       if (res) return cestaDef;
       return false;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -572,7 +573,7 @@ export class CestaClase {
         });
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }
@@ -589,7 +590,7 @@ export class CestaClase {
         });
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }

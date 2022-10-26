@@ -4,7 +4,8 @@ import {cajaInstance} from './caja/caja.clase';
 import {movimientosInstance} from './movimientos/movimientos.clase';
 import {trabajadoresInstance} from './trabajadores/trabajadores.clase';
 import {devolucionesInstance} from './devoluciones/devoluciones.clase';
-
+import {Mqtt} from './mqtt';
+const mqtt = new Mqtt();
 const io = require('socket.io-client');
 //const socket = io('https://sanpedro.cloud'); // NORMAL //io('http://34.78.247.153:3001'); // NORMAL
 const socket = io('http://santaana.nubehit.com:3001'); // NORMAL //io('http://34.78.247.153:3001'); // NORMAL
@@ -23,7 +24,7 @@ socket.on('resSincroTickets', async (data) => {
       if (await ticketsInstance.actualizarEstadoTicket(data.ticket)) {
         sincronizarTickets(true);
       } else {
-        console.log("Error al actualizar el ticket");
+        mqtt.loggerMQTT("Error al actualizar el ticket");
       }
     }
   } else {
@@ -44,25 +45,25 @@ socket.on('resCajas', (data) => {
         if (res) {
           sincronizarCajas();
         } else {
-          console.log('Error al actualizar el estado de la caja');
+          mqtt.loggerMQTT('Error al actualizar el estado de la caja');
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
       });
     } else {
       cajaInstance.confirmarCajaHabiaLlegado(data.infoCaja).then((res) => {
         if (res) {
           sincronizarCajas();
         } else {
-          console.log('Error al actualizar el estado de la caja 2');
+          mqtt.loggerMQTT('Error al actualizar el estado de la caja 2');
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
       });
       // cambiar estado infoCaja en mongo (enviado + comentario)
     }
   } else {
-    console.log(data.mensaje);
+    mqtt.loggerMQTT(data.mensaje);
   }
 });
 
@@ -72,13 +73,13 @@ socket.on('resMovimientos', (data) => {
       if (res) {
         sincronizarMovimientos(true);
       } else {
-        console.log('Error al actualizar el estado del movimiento');
+        mqtt.loggerMQTT('Error al actualizar el estado del movimiento');
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     });
   } else {
-    console.log(data.mensaje);
+    mqtt.loggerMQTT(data.mensaje);
   }
 });
 
@@ -88,13 +89,13 @@ socket.on('resFichajes', (data) => {
       if (res) {
         sincronizarFichajes();
       } else {
-        console.log('Error al actualizar el estado del fichaje');
+        mqtt.loggerMQTT('Error al actualizar el estado del fichaje');
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     });
   } else {
-    console.log(data.mensaje);
+    mqtt.loggerMQTT(data.mensaje);
   }
 });
 
@@ -104,13 +105,13 @@ socket.on('resSincroDevoluciones', (data) => {
       if (res) {
         sincronizarDevoluciones();
       } else {
-        console.log('Error al actualizar el estadio de la devolución.');
+        mqtt.loggerMQTT('Error al actualizar el estadio de la devolución.');
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     });
   } else {
-    console.log(data.mensaje);
+    mqtt.loggerMQTT(data.mensaje);
   }
 });
 

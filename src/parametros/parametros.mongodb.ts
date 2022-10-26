@@ -1,13 +1,14 @@
 import { conexion } from "../conexion/mongodb";
 import { ParametrosInterface } from "./parametros.interface";
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export async function getParametros(): Promise<ParametrosInterface> {
   try {
     const database = (await conexion).db("tocgame");
     const parametros = database.collection<ParametrosInterface>("parametros");
     return await parametros.findOne({ _id: "PARAMETROS" });
   } catch (err) {
-    console.log(err);
+    mqtt.loggerMQTT(err);
     return null;
   }
 }
@@ -60,7 +61,7 @@ export async function setUltimoTicket(idTicket: number): Promise<boolean> {
       )
     ).acknowledged;
   } catch (err) {
-    console.log(err);
+    mqtt.loggerMQTT(err);
     return false;
   }
 }

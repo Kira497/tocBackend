@@ -1,6 +1,7 @@
 import {InsertManyResult} from 'mongodb';
 import {conexion} from '../conexion/mongodb';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export async function insertarTeclas(arrayTeclas) {
   // const database = (await conexion).db('tocgame');
   // const teclas = database.collection('teclas');
@@ -48,6 +49,6 @@ export async function crearTecla(id, nuevaPos, nombreMenu,sumable,nombre) {
   const database = (await conexion).db('tocgame');
   const articulos = database.collection('teclas');
   const resultado = await articulos.insertOne( {Data: new Date(),pos: nuevaPos, nomMenu: nombreMenu, esSumable: sumable,nombreArticulo: nombre,idArticle:id, color:9109472 });
-console.log(resultado)
+mqtt.loggerMQTT(resultado)
   return resultado;
 }

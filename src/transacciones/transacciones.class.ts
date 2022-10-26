@@ -1,7 +1,8 @@
 import {cestas} from 'src/cestas/cestas.clase';
 import {CestasInterface} from 'src/cestas/cestas.interface';
 import * as schTransacciones from './transacciones.mongodb';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 class TransaccionesClass {
   crearTransaccion(cesta: CestasInterface, total: number, idCliente: string): Promise <any> {
     return schTransacciones.crearTransaccion(cesta, total, idCliente).then((res) => {
@@ -19,14 +20,14 @@ class TransaccionesClass {
     return schTransacciones.getTransaccionById(idTransaccion).then((res) => {
       return res;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }
 
   setPagada(idTransaccion: string) {
     return schTransacciones.setPagada(idTransaccion).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -38,7 +39,7 @@ class TransaccionesClass {
       }
       return null;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }

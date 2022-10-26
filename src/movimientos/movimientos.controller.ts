@@ -1,5 +1,7 @@
 import {Controller, Post, Body} from '@nestjs/common';
 import {movimientosInstance} from './movimientos.clase';
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('movimientos')
 export class MovimientosController {
     @Post('nuevaSalida')
@@ -12,7 +14,7 @@ export class MovimientosController {
           return {error: true, mensaje: 'Error en nuevaSalida()'};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Error, ver log nest'};
       });
     } else {
@@ -30,7 +32,7 @@ export class MovimientosController {
             return {error: true, mensaje: 'Error en nuevaEntrada()'};
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true, mensaje: 'Error, ver log nest'};
         });
       } else {

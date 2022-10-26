@@ -6,7 +6,8 @@ import {cestas} from '../cestas/cestas.clase';
 import {tecladoInstance} from './teclado.clase';
 import {ofertas} from 'src/promociones/promociones.clase';
 
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('teclado')
 export class TecladoController {
     @Post('clickTeclaArticulo')
@@ -18,7 +19,7 @@ export class TecladoController {
         cesta: res,
       };
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return {
         error: true,
         mensaje: 'Error en addItem',

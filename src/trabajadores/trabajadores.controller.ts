@@ -3,7 +3,8 @@ import {trabajadoresInstance} from './trabajadores.clase';
 import {UtilesModule} from '../utiles/utiles.module';
 import {parametrosInstance} from '../parametros/parametros.clase';
 import axios from 'axios';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('trabajadores')
 export class TrabajadoresController {
     @Post('getTrabajadoresFichados')
@@ -21,7 +22,7 @@ export class TrabajadoresController {
         };
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return {
         error: true,
       };
@@ -40,7 +41,7 @@ export class TrabajadoresController {
             return {error: true};
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true};
         });
       }
@@ -55,7 +56,7 @@ export class TrabajadoresController {
           return {error: true};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true};
       });
     }
@@ -69,7 +70,7 @@ export class TrabajadoresController {
           return {error: true};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true};
       });
     }
@@ -82,7 +83,7 @@ export class TrabajadoresController {
           return {error: true};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true};
       });
     }
@@ -102,7 +103,7 @@ export class TrabajadoresController {
             return {error: true, mensaje: 'Error en ficharTrabajador()'};
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true, mensaje: 'Error, mirar consola nest'};
         });
       } else {
@@ -119,7 +120,7 @@ export class TrabajadoresController {
           return {error: true, mensaje: 'Error en desficharTrabajador()'};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Error, mirar consola nest'};
       });
     }
@@ -128,7 +129,7 @@ export class TrabajadoresController {
       return trabajadoresInstance.actualizarTrabajadores().then((res) => {
         return res;
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Backend: Error en trabajadores/actualizarTrabajadores CATCH'};
       });
     }
@@ -148,7 +149,7 @@ export class TrabajadoresController {
             return {error: true, mensaje: res.data.mensaje};
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true, mensaje: 'Error en backend crearPlan CATCH'};
         });
       } else {
@@ -166,7 +167,7 @@ export class TrabajadoresController {
         return trabajadoresInstance.guardarHorasExtraCoordinacion(params.horasExtra, params.horasCoordinacion, params.idTrabajador, params.timestamp).then((res) => {
           return res;
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
         });
       } else {
         return {error: true, mensaje: 'Backend: Error faltan datos en trabajadores/guardarHorasExtrCoordinacion'};
@@ -184,7 +185,7 @@ export class TrabajadoresController {
             return {error: true, mensaje: 'Error en ficharTrabajador()'};
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true, mensaje: 'Error, mirar consola nest'};
         });
       } else {
@@ -201,7 +202,7 @@ export class TrabajadoresController {
           return {error: true, mensaje: 'Error en desficharTrabajador()'};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Error, mirar consola nest'};
       });
     }

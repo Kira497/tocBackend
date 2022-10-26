@@ -9,7 +9,8 @@ import {parametrosInstance} from '../parametros/parametros.clase';
 import {Dispositivos} from '../dispositivos';
 import {devolucionesInstance} from 'src/devoluciones/devoluciones.clase';
 import axios from 'axios';
-
+import {Mqtt} from '../mqtt';
+const mqttlog = new Mqtt();
 
 const dispositivos = new Dispositivos();
 const escpos = require('escpos');
@@ -30,7 +31,7 @@ function permisosImpresora() {
         echo sa | sudo -S chmod 777 -R /dev/    
     `);
   } catch (err) {
-    console.log(err);
+      mqttlog.loggerMQTT(err);
   }
 }
 function random() {
@@ -102,10 +103,10 @@ export class Impresora {
 
         }
       } else {
-        console.log('Controlado: dispositivo es null');
+          mqttlog.loggerMQTT('Controlado: dispositivo es null');
       }
     } catch (err) {
-      console.log('Error1: ', err);
+        mqttlog.loggerMQTT('Error1: '+err);
       // errorImpresora(err, event);
     }
   }
@@ -138,10 +139,10 @@ export class Impresora {
 
         }
       } else {
-        console.log('Controlado: dispositivo es null');
+          mqttlog.loggerMQTT('Controlado: dispositivo es null');
       }
     } catch (err) {
-      console.log('Error1: ', err);
+        mqttlog.loggerMQTT('Error1: '+ err);
       // errorImpresora(err, event);
     }
   }
@@ -154,7 +155,7 @@ export class Impresora {
     } else {
       infoTicket = await devolucionesInstance.getDevolucionByID(idTicket);
     }
-    // console.log(infoTicket)
+    //   mqttlog.loggerMQTT(infoTicket)
     const infoTrabajador: TrabajadoresInterface = await trabajadoresInstance.getTrabajador(infoTicket.idTrabajador);
     const parametros = parametrosInstance.getParametros();
     let sendObject;
@@ -210,7 +211,7 @@ export class Impresora {
   }
 
   private async imprimirRecibo(recibo: string) {
-    console.log('imprimir recibo');
+      mqttlog.loggerMQTT('imprimir recibo');
     try {
       permisosImpresora();
       const device = await dispositivos.getDevice();
@@ -231,7 +232,7 @@ export class Impresora {
             .close();
       });
     } catch (err) {
-      console.log('Error impresora: ', err);
+        mqttlog.loggerMQTT('Error impresora: ' +err);
     }
   }
 
@@ -240,7 +241,7 @@ export class Impresora {
     const arrayCompra = info.arrayCompra;
     const total = info.total;
     const tipoPago = info.visa;
-    // console.log(tipoPago)
+    //   mqttlog.loggerMQTT(tipoPago)
     const tiposIva = info.tiposIva;
     const cabecera = info.cabecera;
     const pie = info.pie;
@@ -334,7 +335,7 @@ export class Impresora {
       let pagoDevolucion: string = '';
 
       if (tipoPago == 'DEVOLUCION') {
-        // console.log('Entramos en tipo pago devolucion')
+        //   mqttlog.loggerMQTT('Entramos en tipo pago devolucion')
         pagoDevolucion = '-- ES DEVOLUCION --\n';
       }
 
@@ -408,7 +409,7 @@ export class Impresora {
             .close();
       });
     } catch (err) {
-      console.log('Error impresora: ', err);
+        mqttlog.loggerMQTT('Error impresora: '+ err);
     }
   }
 
@@ -467,7 +468,7 @@ export class Impresora {
             .close();
       });
     } catch (err) {
-      console.log(err);
+        mqttlog.loggerMQTT(err);
     }
   }
 
@@ -523,7 +524,7 @@ export class Impresora {
             .close();
       });
     } catch (err) {
-      console.log(err);
+        mqttlog.loggerMQTT(err);
     }
   }
 
@@ -567,7 +568,7 @@ export class Impresora {
             .close();
       });
     } catch (err) {
-      console.log(err);
+        mqttlog.loggerMQTT(err);
     }
   }
 
@@ -678,7 +679,7 @@ export class Impresora {
             .close();
       });
     } catch (err) {
-      console.log(err);
+        mqttlog.loggerMQTT(err);
     }
   }
 
@@ -686,7 +687,7 @@ export class Impresora {
     const parametros = parametrosInstance.getParametros();
     try {
       if (os.platform() === 'linux') {
-        console.log('abrir cajon linux')
+          mqttlog.loggerMQTT('abrir cajon linux')
         permisosImpresora();
         // if(parametros.tipoImpresora === 'USB')
         // {
@@ -749,7 +750,7 @@ export class Impresora {
         
       }
     } catch (err) {
-      console.log(err);
+        mqttlog.loggerMQTT(err);
     }
   }
   async mostrarVisor(data) {
@@ -815,13 +816,13 @@ export class Impresora {
 
         }
       } else {
-        console.log('Controlado: dispositivo es null');
+          mqttlog.loggerMQTT('Controlado: dispositivo es null');
       }
     } catch (err) {
-      console.log('Error2: ', err);
+        mqttlog.loggerMQTT('Error2: '+ err);
       // errorImpresora(err, event);
     }
-    // console.log('El visor da muchos problemas');
+    //   mqttlog.loggerMQTT('El visor da muchos problemas');
   }
   async imprimirEntregas() {
     const params = parametrosInstance.getParametros();
@@ -848,11 +849,11 @@ export class Impresora {
         }
         return {error: true, info: 'Error, no se encuentra la impresora'};
       } catch (err) {
-        console.log(err);
+          mqttlog.loggerMQTT(err);
         return {error: true, info: 'Error en CATCH imprimirEntregas() 2'};
       }
     }).catch((err) => {
-      console.log(err);
+        mqttlog.loggerMQTT(err);
       return {error: true, info: 'Error en CATCH imprimirEntregas() 1'};
     });
   }

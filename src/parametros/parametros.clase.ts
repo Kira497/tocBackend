@@ -2,7 +2,8 @@
 import {ParametrosInterface} from './parametros.interface';
 import * as schParametros from './parametros.mongodb';
 import * as schTickets from '../tickets/tickets.mongodb';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 const TIPO_USB = 'USB';
 const TIPO_SERIE = 'SERIE';
 const TIPO_CLEARONE = 'CLEARONE';
@@ -41,13 +42,13 @@ export class ParametrosClase {
           infoParams.ultimoTicket = ultimoIDTicket;
           this.parametros = infoParams;
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
         });
       } else {
         this.parametros = parametrosVacios;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       this.parametros = parametrosVacios;
     });
   }
@@ -60,7 +61,7 @@ export class ParametrosClase {
     return schParametros.getParametros().then((infoParams: ParametrosInterface) => {
       return infoParams;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return null;
     });
   }
@@ -69,7 +70,7 @@ export class ParametrosClase {
     return await schParametros.setParametros(this.parametros).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -77,7 +78,7 @@ export class ParametrosClase {
     return await schParametros.getLicencia().then((res) => {
       return res.licencia;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -86,7 +87,7 @@ export class ParametrosClase {
     return schParametros.setParametros(this.parametros).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -114,7 +115,7 @@ export class ParametrosClase {
         this.parametros = parametrosVacios;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       this.parametros = parametrosVacios;
     });
   }
@@ -131,7 +132,7 @@ export class ParametrosClase {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -144,7 +145,7 @@ export class ParametrosClase {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }

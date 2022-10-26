@@ -3,7 +3,8 @@ import { TicketsInterface } from "./tickets.interface";
 import { UtilesModule } from "../utiles/utiles.module";
 import { ticketsInstance } from "./tickets.clase";
 import { parametrosInstance } from "../parametros/parametros.clase";
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export async function limpiezaTickets() {
   const database = (await conexion).db("tocgame");
   const tickets = database.collection("tickets");
@@ -162,7 +163,7 @@ export async function nuevoTicket(ticket: TicketsInterface): Promise<boolean> {
     const tickets = database.collection<TicketsInterface>("tickets");
     return (await tickets.insertOne(ticket)).acknowledged;
   } catch (err) {
-    console.log(err);
+    mqtt.loggerMQTT(err);
     return false;
   }
 }
@@ -225,7 +226,7 @@ export async function borrarTicket(idTicket: number): Promise<boolean> {
     throw Error("No se ha podido eliminar el ticket > tickets.mongodb > borrarTicket()");
 
   } catch (err) {
-    console.log(err);
+    mqtt.loggerMQTT(err);
     return false;
   }
 }
@@ -268,7 +269,7 @@ export async function anularTicket(idTicket: number, forzar = false) {
       return false;
     }
   } catch (err) {
-    console.log(err);
+    mqtt.loggerMQTT(err);
     return false;
   }
 }
@@ -294,7 +295,7 @@ export async function getTicketsTarjeta(inicioTime: number, finalTime: number) {
 //       const resultado = await tickets.insertOne({ idTicketAnulado: idTicket });
 //       return resultado.acknowledged;
 //     } catch (err) {
-//     console.log(err);
+//     mqtt.loggerMQTT(err);
 //     return false;
 //   }
 // }

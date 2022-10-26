@@ -1,7 +1,8 @@
 import {Controller, Get} from '@nestjs/common';
 import axios from 'axios';
 import {TurnosClass} from './turnos.class';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('turnos')
 export class TurnosController {
     @Get('getPlanes')
@@ -13,7 +14,7 @@ export class TurnosController {
       }
       return {error: true, mensaje: res.mensaje};
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return {error: true, mensaje: 'Error: Backend turnos/getPlanes CATCH'};
     });
   }

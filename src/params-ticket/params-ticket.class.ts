@@ -1,5 +1,6 @@
 import * as schParamsTicket from './params-ticket.mongo';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export class ParamsTicketClass {
   insertarParametrosTicket(data) {
     return schParamsTicket.insertarParametrosTicket(data).then((res) => {
@@ -9,7 +10,7 @@ export class ParamsTicketClass {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -18,7 +19,7 @@ export class ParamsTicketClass {
     return schParamsTicket.getParamsTicket().then((res) => {
       return res;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return [];
     });
   }

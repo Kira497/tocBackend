@@ -2,6 +2,8 @@ import {Body, Controller, Post, Get, ConsoleLogger} from '@nestjs/common';
 import {parametrosInstance} from './parametros.clase';
 import {ParametrosInterface} from './parametros.interface';
 import axios from 'axios';
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('parametros')
 export class ParametrosController {
     @Post('todoInstalado')
@@ -40,14 +42,14 @@ export class ParametrosController {
               return {error: true, mensaje: 'Backend: Error en instalador/pedirDatos > setParametros'};
             }
           }).catch((err) => {
-            console.log(err);
+            mqtt.loggerMQTT(err);
             return {error: true, mensaje: 'Backend: No se ha podido setear parametros'};
           });
         } else {
           return {error: true, mensaje: res.data.mensaje};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Error en pedir parametros/instaladorLicencia de sanPedro'};
       });
     }
@@ -69,7 +71,7 @@ export class ParametrosController {
               return {error: true, mensaje: 'Backend: parametros/vidAndPid setVidAndPid no se ha podido guardar'};
             }
           }).catch((err) => {
-            console.log(err);
+            mqtt.loggerMQTT(err);
             return {error: true, mensaje: 'Backend: parametros/vidAndPid setVidAndPid catch'};
           });
         } else {
@@ -94,7 +96,7 @@ export class ParametrosController {
           }};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Backend: Error en getVidAndPid CATCH'};
       });
     }
@@ -109,7 +111,7 @@ export class ParametrosController {
               return {error: true, mensaje: 'Backend: parametros/setIpPaytef setIpPaytef no se ha podido guardar'};
             }
           }).catch((err) => {
-            console.log(err);
+            mqtt.loggerMQTT(err);
             return {error: true, mensaje: 'Backend: parametros/setIpPaytef setIpPaytef catch'};
           });
         } else {
@@ -129,7 +131,7 @@ export class ParametrosController {
           return {error: false, info: ''};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Backend: Error en getIpPaytef CATCH'};
       });
     }

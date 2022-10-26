@@ -9,7 +9,8 @@ import {parametrosInstance} from '../parametros/parametros.clase';
 import {ticketsInstance} from '../tickets/tickets.clase';
 import {paytefInstance} from './paytef.class';
 // import find from 'local-devices'
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 const exec = require('child_process').exec;
 const os = require('os');
 
@@ -25,7 +26,7 @@ export class PaytefController {
         return false;
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -34,7 +35,7 @@ export class PaytefController {
     buscarDispositivos() {
       exec('arp -a', (err, stdout, stderr) => {
         if (err) {
-          console.log(err);
+          mqtt.loggerMQTT(err);
         } else {
           let ipTefpay = '';
           const arrayDevices: any = stdout.split(/\r?\n/);

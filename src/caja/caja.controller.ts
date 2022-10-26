@@ -1,6 +1,7 @@
 import {Controller, Post, Body} from '@nestjs/common';
 import {cajaInstance} from './caja.clase';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('caja')
 export class CajaController {
     @Post('cerrarCaja')
@@ -21,14 +22,14 @@ export class CajaController {
               }
               return {error: true, mensaje: 'Backend: Error en caja/cerrarCaja > Comprobar log'};
             }).catch((err) => {
-              console.log(err);
+              mqtt.loggerMQTT(err);
               return {error: true, mensaje: 'Error en catch caja/cerrarCaja > guardaMonedas'};
             });
           } else {
             return {error: true, mensaje: 'Backend: No se ha podido cerrar caja'};
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true, mensaje: 'Backend: Error CATCH caja/cerrarCaja'};
         });
       } else {
@@ -49,7 +50,7 @@ export class CajaController {
             return {error: true};
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true};
         });
       } else {
@@ -66,7 +67,7 @@ export class CajaController {
           return {abierta: false, error: false};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Backend: Error en caja/estadoCaja CATCH'};
       });
     }
@@ -76,7 +77,7 @@ export class CajaController {
       return cajaInstance.getMonedas('CLAUSURA').then((res) => {
         return {error: false, info: res};
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Backend: Error en caja/getMonedasUltimoCierre > CATCH'};
       });
     }
@@ -86,7 +87,7 @@ export class CajaController {
       return cajaInstance.getDatosUltimoCierre().then((res) => {
         return {error: false, info: res};
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Backend: Error en caja/getDatosUltimoCierre > CATCH'};
       });
     }
@@ -96,7 +97,7 @@ export class CajaController {
       return cajaInstance.getDatosMoviments(params.fechaInicio, params.fechaFinal).then((res) => {
         return {error: false, info: res};
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Backend: Error en caja/getDatosMoviments > CATCH'};
       });
     }

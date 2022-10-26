@@ -1,7 +1,9 @@
 // 100%
+
 import {ArticulosInterface} from './articulos.interface';
 import * as schArticulos from './articulos.mongodb';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 export class Articulos {
   public estadoTarifaVIP: boolean;
   constructor() {
@@ -12,7 +14,7 @@ export class Articulos {
     try {
       this.estadoTarifaVIP = payload;
     } catch (err) {
-      console.log(err);
+      mqtt.loggerMQTT(err);
     }
   }
 
@@ -34,7 +36,7 @@ export class Articulos {
     return schArticulos.insertarArticulos(arrayArticulos, esTarifaEspecial).then((res) => {
       return res.acknowledged;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -44,7 +46,7 @@ export class Articulos {
     return schArticulos.insertarArticulo(articulo, esTarifaEspecial).then((res) => {
       return res;
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return false;
     });
   }
@@ -55,7 +57,7 @@ export class Articulos {
 
   async editarArticulo(id, nombre, precioBase, precioConIva) {
     const resultado = await schArticulos.editarArticulo(id, nombre, precioBase, precioConIva);
-    // console.log(resultado)
+    // mqtt.loggerMQTT(resultado)
     return resultado;
   }
 }

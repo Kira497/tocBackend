@@ -12,7 +12,8 @@ import {menusInstance} from 'src/menus/menus.clase';
 import {tecladoInstance} from 'src/teclado/teclado.clase';
 import {dobleMenusInstance} from 'src/doble-menus/doble-menus.clase';
 import {cestas} from 'src/cestas/cestas.clase';
-
+import {Mqtt} from '../mqtt';
+const mqtt = new Mqtt();
 @Controller('instalador')
 export class InstaladorController {
     @Post('pedirDatos')
@@ -57,14 +58,14 @@ export class InstaladorController {
             return {error: true, mensaje: 'Backend: Error en instalador/pedirDatos > setParametros'};
           }
         }).catch((err) => {
-          console.log(err);
+          mqtt.loggerMQTT(err);
           return {error: true, mensaje: 'Backend: No se ha podido setear parametros'};
         });
       } else {
         return {error: true, mensaje: res.data.mensaje};
       }
     }).catch((err) => {
-      console.log(err);
+      mqtt.loggerMQTT(err);
       return {error: true, mensaje: 'Error en pedir parametros/instaladorLicencia de sanPedro'};
     });
   }
@@ -97,7 +98,7 @@ export class InstaladorController {
           return {error: true, mensaje: res.data.mensaje};
         }
       }).catch((err) => {
-        console.log(err);
+        mqtt.loggerMQTT(err);
         return {error: true, mensaje: 'Backend: Errro en instalador/descargarTodo. Mirar log'};
       });
     }
