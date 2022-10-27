@@ -791,8 +791,10 @@ export class Impresora {
       if (device != null) {
 
         if(device === 'MQTT'){
+
           let string = `${datosExtra} ${data.texto}                                               `
           client.publish('hit.hardware/visor',string.substring(0,40))
+
           return
         }
         const options = {encoding: 'iso88591'};
