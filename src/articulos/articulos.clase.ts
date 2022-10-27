@@ -54,6 +54,18 @@ export class Articulos {
   async getSuplementos(suplementos) {
     return await schArticulos.getSuplementos(suplementos);
   }
+  buscar(busqueda: string) {
+    return schArticulos.buscar(busqueda).then((res: any) => {
+      if (res.length > 0) {
+        return res;
+      } else {
+        return [];
+      }
+    }).catch((err) => {
+      mqtt.loggerMQTT(err);
+      return [];
+    });
+  }
 
   async editarArticulo(id, nombre, precioBase, precioConIva) {
     const resultado = await schArticulos.editarArticulo(id, nombre, precioBase, precioConIva);

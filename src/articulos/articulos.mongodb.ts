@@ -79,3 +79,12 @@ export async function editarArticulo(id, nombre, precioBase, precioConIva) {
   await teclas.updateMany({idArticle: id}, {$set: {'nombreArticulo': nombre}}, {upsert: true});
   return await articulos.updateOne({_id: id}, {$set: {'nombre': nombre, 'precioBase': precioBase, 'precioConIva': precioConIva}}, {upsert: true});
 }
+export async function buscar(busqueda: string) {
+  const database = (await conexion).db('tocgame');
+  const trabajadores = database.collection('articulos');
+  const resultado = await trabajadores.find({$or: [{'nombre': {'$regex': new RegExp(busqueda, 'i')}}, {'nombreCorto': {'$regex': new RegExp(busqueda, 'i')}}]}, {limit: 4});
+
+  const arrayTrabajadores = await resultado.toArray();
+
+  return arrayTrabajadores;
+}

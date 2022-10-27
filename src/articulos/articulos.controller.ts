@@ -47,4 +47,9 @@ export class ArticulosController {
       }
     }
 
+    @Post('buscar')
+    buscar(@Body() params) {
+      return articulosInstance.buscar(params.busqueda);
+    }
+
 }
