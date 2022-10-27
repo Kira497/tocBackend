@@ -80,7 +80,7 @@ export class Impresora {
       const device = await dispositivos.getDeviceVisor();
       if (device != null) {
         if(device === 'MQTT'){
-          client.publish('hit.hardware/visor','Bon Dia!!')
+          client.publish('hit.hardware/visor','Bon Dia!!                               ')
           return
         }
         const options = {encoding: 'iso88591'};
@@ -118,7 +118,7 @@ export class Impresora {
       if (device != null) {
 
         if(device === 'MQTT'){
-          client.publish('hit.hardware/visor','Moltes Gracies !!')
+          client.publish('hit.hardware/visor','Moltes Gracies !!                       ')
           return
         }
         const options = {encoding: 'iso88591'};
@@ -791,7 +791,8 @@ export class Impresora {
       if (device != null) {
 
         if(device === 'MQTT'){
-          client.publish('hit.hardware/visor',`${datosExtra} \n ${data.texto}`)
+          let string = `${datosExtra} ${data.texto}                                               `
+          client.publish('hit.hardware/visor',string.substring(0,40))
           return
         }
         const options = {encoding: 'iso88591'};
