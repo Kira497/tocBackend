@@ -754,7 +754,6 @@ export class Impresora {
     }
   }
   async mostrarVisor(data) {
-    // var eur = String.fromCharCode(128);
     let eur = 'E';
 
     let limitNombre = 0;
@@ -784,47 +783,43 @@ export class Impresora {
     // Limito el texto a 14, ya que la línea completa tiene 20 espacios. (1-14 -> artículo, 15 -> espacio en blanco, 16-20 -> precio)
     data.texto = data.texto.substring(0, 14);
     data.texto += ' ' + data.precio + eur;
-    try {
-      permisosImpresora();
+//    try {
+//      permisosImpresora();
       //   var device = new escpos.USB('0x67b','0x2303');
-      const device = await dispositivos.getDeviceVisor();
-      if (device != null) {
-
-        if(device === 'MQTT'){
-
+//      const device = await dispositivos.getDeviceVisor();
+//      if (device != null) {
+//        if(device === 'MQTT'){
           let string = `${datosExtra} ${data.texto}                                               `
+          string = string + '                                             '
+          console.log('Mqtt sended' + string + '.')
           client.publish('hit.hardware/visor',string.substring(0,40))
-
-          return
-        }
-        const options = {encoding: 'iso88591'};
-        const printer = new escpos.Screen(device, options);
-
-        try {
-          device.open(function() {
-            printer
+//          return
+//        }
+//        const options = {encoding: 'iso88591'};
+//        const printer = new escpos.Screen(device, options);
+//        try {
+//          device.open(function() {
+//            printer
             // Espacios en blanco para limpiar el visor y volver a mostrar los datos en el sitio correcto
             // .text("")
-                .clear()
+//                .clear()
             // .moveUp()
             // Información del artículo (artículo + precio)
-                .text(datosExtra )
-                .text(data.texto)
-
+//                .text(datosExtra )
+//                .text(data.texto)
             // .text(datosExtra)
-
-                .close();
-          });
-        } catch (error) {
-
-        }
-      } else {
-          mqttlog.loggerMQTT('Controlado: dispositivo es null');
-      }
-    } catch (err) {
-        mqttlog.loggerMQTT('Error2: '+ err);
+//                .close();
+//          });
+//        } catch (error) {
+//
+//        }
+//      } else {
+//          mqttlog.loggerMQTT('Controlado: dispositivo es null');
+//      }
+//    } catch (err) {
+//        mqttlog.loggerMQTT('Error2: '+ err);
       // errorImpresora(err, event);
-    }
+//    }
     //   mqttlog.loggerMQTT('El visor da muchos problemas');
   }
   async imprimirEntregas() {
