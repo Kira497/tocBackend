@@ -45,7 +45,7 @@ export async function getLicencia() {
   const database = (await conexion).db("tocgame");
   const parametros = database.collection("parametros");
   const resultado = await parametros.findOne({ _id: "PARAMETROS" });
-
+ 
   return resultado;
 }
 
