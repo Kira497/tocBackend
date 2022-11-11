@@ -14,8 +14,6 @@ const mqttlog = new Mqtt();
 
 const dispositivos = new Dispositivos();
 const escpos = require('escpos');
-const exec = require('child_process').exec;
-const os = require('os');
 escpos.USB = require('escpos-usb');
 escpos.Serial = require('escpos-serialport');
 escpos.Screen = require('escpos-screen');
@@ -23,17 +21,7 @@ const TIPO_ENTRADA_DINERO = 'ENTRADA';
 const TIPO_SALIDA_DINERO = 'SALIDA';
 const mqtt = require('mqtt')
 const client  = mqtt.connect('mqtt://localhost')
-function permisosImpresora() {
-  try {
-    exec(`  echo sa | sudo -S chmod 777 -R /dev/bus/usb/
-        echo sa | sudo -S chmod 777 -R /dev/ttyS0
-        echo sa | sudo -S chmod 777 -R /dev/ttyS1
-        echo sa | sudo -S chmod 777 -R /dev/    
-    `);
-  } catch (err) {
-      mqttlog.loggerMQTT(err);
-  }
-}
+
 function random() {
   const numero = Math.floor(10000000 + Math.random() * 999999999);
   return numero.toString(16).slice(0, 8);
@@ -531,7 +519,7 @@ export class Impresora {
   async imprimirTest() {
     const parametros = parametrosInstance.getParametros();
     try {
-      permisosImpresora();
+      //permisosImpresora();
       // if(parametros.tipoImpresora === 'USB')
       // {
       //     const arrayDevices = escpos.USB.findPrinter();
@@ -595,7 +583,7 @@ export class Impresora {
       }
       textoMovimientos = `\nTotal targeta:      ${sumaTarjetas.toFixed(2)}\n` + textoMovimientos;
 
-      permisosImpresora();
+//      permisosImpresora();
       // if(tipoImpresora === 'USB')
       // {
       //     const arrayDevices = escpos.USB.findPrinter();
@@ -688,7 +676,7 @@ export class Impresora {
     try {
       if (os.platform() === 'linux') {
           mqttlog.loggerMQTT('abrir cajon linux')
-        permisosImpresora();
+//        permisosImpresora();
         // if(parametros.tipoImpresora === 'USB')
         // {
         //     const arrayDevices = escpos.USB.findPrinter();
@@ -718,7 +706,7 @@ export class Impresora {
               .close();
         });
       }else if (os.platform() === 'win32') {
-        permisosImpresora();
+//        permisosImpresora();
         // if(parametros.tipoImpresora === 'USB')
         // {
         //     const arrayDevices = escpos.USB.findPrinter();
@@ -765,7 +753,7 @@ export class Impresora {
     data.texto = data.texto.substring(0, 14);
     data.texto += ' ' + data.precio + eur;
     try {
-      permisosImpresora();
+//      permisosImpresora();
 //    try {
 //      permisosImpresora();
       //   var device = new escpos.USB('0x67b','0x2303');
@@ -911,7 +899,7 @@ export class Impresora {
     const params = parametrosInstance.getParametros();
     return axios.post('entregas/getEntregas', {database: params.database, licencia: params.licencia}).then(async (res: any) => {
       try {
-        permisosImpresora();
+//        permisosImpresora();
         const device = await dispositivos.getDevice();
         if (device != null) {
           const options = {encoding: 'ISO-8859-15'}; // "GB18030" };
