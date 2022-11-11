@@ -16,7 +16,6 @@ export class TecladoClase {
     });
   }
 
-  
   actualizarTeclado() {
     return axios.post('articulos/descargarArticulosEspeciales', {database: parametrosInstance.getParametros().database, codigoCliente: parametrosInstance.getParametros().codigoTienda}).then((res: any) => {
       if (res.data.error == false) {
